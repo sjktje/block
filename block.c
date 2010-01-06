@@ -103,7 +103,7 @@ pfctlkill(int argc, char *argv[])
         
         strncat(cmd, argv[i], cmdlength);
 
-        printf("%s\n", cmd);
+        system(cmd);
 
         free(cmd);
         cmd = NULL;
@@ -128,7 +128,7 @@ pfctladd(char *ips, char *table)
 
     strncat(cmd, ips, cmdlength);
 
-    printf("%s\n", cmd);
+    system(cmd);
 
     free(cmd);
     cmd = NULL;
