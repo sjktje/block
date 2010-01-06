@@ -35,14 +35,18 @@ int
 main(int argc, char *argv[]) 
 {
     int   kflag = 0;      /* -k kills states */
+    int   Kflag = 0;      /* -K only kills states */
     int   ch;             /* Getopt */
     char *ips = NULL;     /* Ip addresses in argv */
     char *table = NULL;
 
-    while ((ch = getopt(argc, argv, "hkt:")) != -1) {
+    while ((ch = getopt(argc, argv, "hkKt:")) != -1) {
         switch(ch) {
         case 'k':
             kflag = 1;
+            break;
+        case 'K':
+            Kflag = 1;
             break;
         case 't':
             table = optarg;
@@ -67,9 +71,10 @@ main(int argc, char *argv[])
     if (table == NULL) 
         asprintf(&table, "%s", DEFAULTTABLE);
 
-    pfctladd(ips, table);
+    if (!Kflag)
+        pfctladd(ips, table);
 
-    if (kflag) 
+    if (kflag || Kflag) 
         pfctlkill(argc, argv);
 
     return 0;
@@ -167,6 +172,6 @@ getips(int argc, char *argv[])
 void
 usage(void)
 {
-    fprintf(stderr, "usage: block [-hk] [-t table] ip ip ... ip\n");
+    fprintf(stderr, "usage: block [-hkK] [-t table] ip ip ... ip\n");
     exit(1);
 }

@@ -16,7 +16,7 @@
 block - add specified addresses to firewall block tables
 .SH SYNOPSIS
 .B block
-[\-hk] [\-t <table>] <ip adresses>
+[\-hkK] [\-t <table>] <ip adresses>
 .SH DESCRIPTION
 .B block 
 attempts to add IP addresses to a PF table and may also be instructed 
@@ -29,6 +29,9 @@ Show short help
 .TP
 -k
 Kill states originating from listed IP addresses
+.TP
+-K 
+Only kills states and does not add addresses to table.
 .TP
 -t <table> 
 Add addresses to specified table instead of the default (badips)
