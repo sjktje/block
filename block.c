@@ -38,7 +38,7 @@ main(int argc, char *argv[])
     int   Kflag = 0;      /* -K only kills states */
     int   ch;             /* Getopt */
     char *ips = NULL;     /* Ip addresses in argv */
-    char *table = NULL;
+    char *table = NULL;   /* Table to add addresses to */  
 
     while ((ch = getopt(argc, argv, "hkKt:")) != -1) {
         switch(ch) {
