@@ -2,7 +2,7 @@ all: block
 
 CC = gcc
 INSTDIR = /usr/local/bin
-MANDIR = /usr/local/man/man1
+MANDIR = /usr/local/share/man/man1
 CFLAGS = -Wall -ansi
 INSTALL = /usr/bin/install -c
 INSTALL_PROGRAM = ${INSTALL}
