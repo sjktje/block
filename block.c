@@ -57,6 +57,11 @@ main(int argc, char *argv[])
     argc -= optind;
     argv += optind;
 
+    if (argc < 1) {
+        usage();
+        exit(1);
+    }
+
     ips = getips(argc, argv);
 
     if (table == NULL) 
