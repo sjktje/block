@@ -63,13 +63,19 @@ main(int argc, char *argv[])
         exit(1);
     }
 
-    if (argv[argc-1][0] == '-') 
+    if (argv[argc-1][0] == '-') { 
         ips = getstdinips();
-    else
+    } else {
         ips = getips(argc, argv);
-
-    if (table == NULL) 
+    }
+    
+    if (table == NULL) {
         asprintf(&table, "%s", DEFAULTTABLE);
+    }
+
+#ifdef DEBUG
+    printf("main() - Ip addresses are: %s\n", ips);
+#endif
 
     if (!Kflag)
         pfctladd(ips, table);
@@ -86,6 +92,10 @@ main(int argc, char *argv[])
 void
 pfctlkill(char *ips)
 {
+#ifdef DEBUG
+    printf("pfctlkill() - IP addresses are: %s\n", ips);
+#endif
+
     char *ip = NULL;
     char *cmd = NULL;
     int   cmdlength = 0;
@@ -114,6 +124,9 @@ pfctlkill(char *ips)
 void 
 pfctladd(char *ips, char *table) 
 {
+#ifdef DEBUG
+    printf("pfctladd() - Ip addresses are: %s\n", ips);
+#endif
     int cmdlength = 0;
     char *cmd = NULL;
 

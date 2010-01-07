@@ -66,6 +66,10 @@ getstdinips(void)
         strncat(ips, " ", iplen);
     }
 
+#ifdef DEBUG
+    printf("getstdinips() - IP addresses are: %s\n", ips);
+#endif
+
     return ips;
 }
 
