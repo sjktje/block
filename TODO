@@ -1,2 +1,3 @@
 - Use autoconf ./configure magic
 - Write man page for unblock
+- Make (un)block read ips from stdin too
