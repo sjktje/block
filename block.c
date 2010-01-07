@@ -18,15 +18,14 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
-#include <pwd.h>
+
+#include "common.h"
 
 #define DEFAULTTABLE "badips"
 
-char *getips(int, char **);
 void  pfctladd(char *, char *);
 void  pfctlkill(int, char **);
 void  usage(void);
-int   isroot(void);
 
 /*
  * block adds specified IP addresses to a pf table 
@@ -80,16 +79,6 @@ main(int argc, char *argv[])
     return 0;
 }
 
-/* 
- * Returns 1 if we're root, 0 if not.
- */
-int
-isroot(void)
-{
-    uid_t uid = getuid();
-    return (uid == 0) ? 1 : 0;
-}
-
 /*
  * Kills states originating from IP addresses provided via commandline.
  */
@@ -128,46 +117,19 @@ pfctladd(char *ips, char *table)
     asprintf(&cmd, "%spfctl -t %s -T add ", 
             isroot() ? "" : "sudo ", table);
 
-    cmdlength = strlen(cmd) + strlen(ips);
+    cmdlength = strlen(cmd) + strlen(ips) + 1;
     cmd = realloc(cmd, cmdlength);
 
     strncat(cmd, ips, cmdlength);
 
-    system(cmd);
 
+    system(cmd);
+    
     free(cmd);
     cmd = NULL;
 }
 
 
-/*
- * Creates string consisting of all entries in *argv[].
- */
-char *
-getips(int argc, char *argv[]) 
-{
-    char *ips = NULL;
-    int   length = 0;
-    int   i;
-
-    ips = malloc(15);
-
-    for (i = 0; i < argc; i++) {
-
-        length += strlen(argv[i])+1;
-
-        if (ips == NULL) 
-            ips = malloc(length);
-        else
-            ips = realloc(ips, length);
-
-        strncat(ips, argv[i], length);
-        strncat(ips, " ", length);
-
-    }
-
-    return ips;
-}
 
 void
 usage(void)
