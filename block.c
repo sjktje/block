@@ -22,7 +22,7 @@
 #include "common.h"
 
 void  pfctladd(char *, char *);
-void  pfctlkill(int, char **);
+void  pfctlkill(char *);
 void  usage(void);
 
 /*
@@ -68,11 +68,12 @@ main(int argc, char *argv[])
     if (table == NULL) 
         asprintf(&table, "%s", DEFAULTTABLE);
 
+
     if (!Kflag)
         pfctladd(ips, table);
 
     if (kflag || Kflag) 
-        pfctlkill(argc, argv);
+        pfctlkill(ips);
 
     return 0;
 }
@@ -80,28 +81,26 @@ main(int argc, char *argv[])
 /*
  * Kills states originating from IP addresses provided via commandline.
  */
-void 
-pfctlkill(int argc, char *argv[])
+void
+pfctlkill(char *ips)
 {
-    int   i;
-    int   cmdlength = 0;
+    char *ip = NULL;
     char *cmd = NULL;
+    int   cmdlength = 0;
 
-    for (i = 0; i < argc; i++) {
+    while((ip = strsep(&ips, " ")) != NULL) {
+        if (ip[0] == '\0')
+            continue;
+
         asprintf(&cmd, "%spfctl -k ", isroot() ? "" : "sudo ");
-        cmdlength = strlen(cmd) + strlen(argv[i]) + 1;
+        cmdlength = strlen(cmd) + strlen(ip) + 1;
 
         cmd = realloc(cmd, cmdlength);
-        
-        strncat(cmd, argv[i], cmdlength);
+        strncat(cmd, ip, cmdlength);
 
         system(cmd);
-
-        free(cmd);
-        cmd = NULL;
     }
 }
-
 
 /* 
  * Adds IP addresses to specified table. Uses sudo if user is not root.
