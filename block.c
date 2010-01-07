@@ -21,8 +21,6 @@
 
 #include "common.h"
 
-#define DEFAULTTABLE "badips"
-
 void  pfctladd(char *, char *);
 void  pfctlkill(int, char **);
 void  usage(void);

@@ -5,8 +5,6 @@
 
 #include "common.h"
 
-#define DEFAULTTABLE "badips"
-
 void pfctldel(char *, char *);
 void usage(void);
 

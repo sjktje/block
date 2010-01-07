@@ -4,4 +4,6 @@
 int   isroot(void);
 char *getips(int, char **);
 
+#define DEFAULTTABLE "badips"
+
 #endif
