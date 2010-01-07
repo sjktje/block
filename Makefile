@@ -3,9 +3,9 @@ CC = gcc
 INSTDIR = /usr/local/bin
 MANDIR = /usr/local/man/man1
 # Release
-# CFLAGS = -Wall -ansi
+CFLAGS = -Wall -ansi
 # Debug
-CFLAGS = -Wall -ansi -DDEBUG
+#CFLAGS = -Wall -ansi -DDEBUG
 INSTALL = /usr/bin/install -c
 INSTALL_PROGRAM = ${INSTALL}
 INSTALL_DATA = ${INSTALL} -m 644
