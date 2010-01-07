@@ -63,11 +63,13 @@ main(int argc, char *argv[])
         exit(1);
     }
 
-    ips = getips(argc, argv);
+    if (argv[argc-1][0] == '-') 
+        ips = getstdinips();
+    else
+        ips = getips(argc, argv);
 
     if (table == NULL) 
         asprintf(&table, "%s", DEFAULTTABLE);
-
 
     if (!Kflag)
         pfctladd(ips, table);
@@ -98,7 +100,11 @@ pfctlkill(char *ips)
         cmd = realloc(cmd, cmdlength);
         strncat(cmd, ip, cmdlength);
 
+#ifdef DEBUG
+        printf("%s\n", cmd);
+#else
         system(cmd);
+#endif
     }
 }
 
@@ -120,8 +126,12 @@ pfctladd(char *ips, char *table)
     strncat(cmd, ips, cmdlength);
 
 
+#ifdef DEBUG
+    printf("%s\n", cmd);
+#else 
     system(cmd);
-    
+#endif
+
     free(cmd);
     cmd = NULL;
 }

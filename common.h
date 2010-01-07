@@ -3,6 +3,7 @@
 
 int   isroot(void);
 char *getips(int, char **);
+char *getstdinips(void);
 
 #define DEFAULTTABLE "badips"
 
