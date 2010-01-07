@@ -55,7 +55,7 @@ getstdinips(void)
             line = tmpline;
         }
 
-        iplen += strlen(line)+1;
+        iplen += strlen(line)+2;
 
         if (ips == NULL)
             ips = malloc(iplen);
