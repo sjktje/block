@@ -8,6 +8,9 @@
 void pfctldel(char *, char *);
 void usage(void);
 
+/*
+ * Removes specified IP from pf table
+ */
 int 
 main(int argc, char *argv[])
 {
@@ -45,6 +48,9 @@ main(int argc, char *argv[])
     return 0;
 }
 
+/*
+ * Tries to remove IP addresses from table. Uses sudo if user is not root
+ */
 void
 pfctldel(char *ips, char *table)
 {
