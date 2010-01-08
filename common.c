@@ -15,8 +15,6 @@ getips(int argc, char *argv[])
     int   length = 0;
     int   i;
 
-    ips = malloc(15);
-
     for (i = 0; i < argc; i++) {
 
         length += strlen(argv[i])+1;
