@@ -19,9 +19,9 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "common.h"
+#include "block.h"
+#include "libsjk.h"
 
-void pfctldel(char *, char *);
 void usage(void);
 
 /*
@@ -54,7 +54,7 @@ main(int argc, char *argv[])
         exit(1);
     }
 
-    ips = getips(argc, argv);
+    ips = catargv(argc, argv);
 
     if (table == NULL) 
         asprintf(&table, "%s", DEFAULTTABLE);
@@ -62,29 +62,6 @@ main(int argc, char *argv[])
     pfctldel(ips, table);
 
     return 0;
-}
-
-/*
- * Tries to remove IP addresses from table. Uses sudo if user is not root
- */
-void
-pfctldel(char *ips, char *table)
-{
-    int cmdlength = 0;
-    char *cmd = NULL;
-
-    asprintf(&cmd, "%spfctl -t %s -T del ",
-            isroot() ? "" : "sudo ", table);
-    
-    cmdlength = strlen(cmd) + strlen(ips) + 1;
-    cmd = realloc(cmd, cmdlength);
-
-    strncat(cmd, ips, cmdlength);
-
-    system(cmd);
-
-    free(cmd);
-    cmd = NULL;
 }
 
 void

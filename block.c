@@ -19,10 +19,9 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "common.h"
+#include "block.h"
+#include "libsjk.h"
 
-void  pfctladd(char *, char *);
-void  pfctlkill(char *);
 void  usage(void);
 
 /*
@@ -64,9 +63,9 @@ main(int argc, char *argv[])
     }
 
     if (argv[argc-1][0] == '-') { 
-        ips = getstdinips();
+        ips = catstdin();
     } else {
-        ips = getips(argc, argv);
+        ips = catargv(argc, argv);
     }
     
     if (table == NULL) {
@@ -85,71 +84,6 @@ main(int argc, char *argv[])
 
     return 0;
 }
-
-/*
- * Kills states originating from IP addresses provided via commandline.
- */
-void
-pfctlkill(char *ips)
-{
-#ifdef DEBUG
-    printf("pfctlkill() - IP addresses are: %s\n", ips);
-#endif
-
-    char *ip = NULL;
-    char *cmd = NULL;
-    int   cmdlength = 0;
-
-    while((ip = strsep(&ips, " ")) != NULL) {
-        if (ip[0] == '\0')
-            continue;
-
-        asprintf(&cmd, "%spfctl -k ", isroot() ? "" : "sudo ");
-        cmdlength = strlen(cmd) + strlen(ip) + 1;
-
-        cmd = realloc(cmd, cmdlength);
-        strncat(cmd, ip, cmdlength);
-
-#ifdef DEBUG
-        printf("%s\n", cmd);
-#else
-        system(cmd);
-#endif
-    }
-}
-
-/* 
- * Adds IP addresses to specified table. Uses sudo if user is not root.
- */
-void 
-pfctladd(char *ips, char *table) 
-{
-#ifdef DEBUG
-    printf("pfctladd() - Ip addresses are: %s\n", ips);
-#endif
-    int cmdlength = 0;
-    char *cmd = NULL;
-
-    asprintf(&cmd, "%spfctl -t %s -T add ", 
-            isroot() ? "" : "sudo ", table);
-
-    cmdlength = strlen(cmd) + strlen(ips) + 1;
-    cmd = realloc(cmd, cmdlength);
-
-    strncat(cmd, ips, cmdlength);
-
-
-#ifdef DEBUG
-    printf("%s\n", cmd);
-#else 
-    system(cmd);
-#endif
-
-    free(cmd);
-    cmd = NULL;
-}
-
-
 
 void
 usage(void)
