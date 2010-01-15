@@ -3,7 +3,7 @@ CC = gcc
 INSTDIR = /usr/local/bin
 MANDIR = /usr/local/man/man1
 # Release
-CFLAGS = -Wall -ansi 
+CFLAGS = -Wall -ansi -I/usr/local/include
 LDFLAGS = -lsjk
 # Debug
 #CFLAGS = -Wall -ansi -DDEBUG
@@ -14,9 +14,9 @@ INSTALL_DATA = ${INSTALL} -m 644
 
 all: block unblock
 
-block: block.o common.o
+block: block.o 
 	$(CC) -o block block.o $(LDFLAGS)
-unblock: unblock.o common.o
+unblock: unblock.o 
 	$(CC) -o unblock unblock.o $(LDFLAGS)
 block.o: block.c
 	$(CC) $(CFLAGS) -c block.c
