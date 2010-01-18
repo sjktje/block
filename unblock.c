@@ -19,6 +19,7 @@
 #include <string.h>
 #include <unistd.h>
 
+#include "config.h"
 #include "block.h"
 #include "libsjk.h"
 
