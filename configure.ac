@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.61)
-AC_INIT([block], [0.0.1], [sjk@ankeborg.nu])
+AC_INIT([block], [0.0.1a], [sjk@ankeborg.nu])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 AC_CONFIG_HEADER([config.h])
 
