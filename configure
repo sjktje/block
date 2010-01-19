@@ -3305,7 +3305,6 @@ fi
 
 # Checks for libraries.
 
-
 { echo "$as_me:$LINENO: checking for perrorf in -lsjk" >&5
 echo $ECHO_N "checking for perrorf in -lsjk... $ECHO_C" >&6; }
 if test "${ac_cv_lib_sjk_perrorf+set}" = set; then
@@ -3368,14 +3367,18 @@ fi
 { echo "$as_me:$LINENO: result: $ac_cv_lib_sjk_perrorf" >&5
 echo "${ECHO_T}$ac_cv_lib_sjk_perrorf" >&6; }
 if test $ac_cv_lib_sjk_perrorf = yes; then
-  cat >>confdefs.h <<_ACEOF
-#define HAVE_LIBSJK 1
-_ACEOF
-
-  LIBS="-lsjk $LIBS"
-
+  have_libsjk=yes
 fi
 
+
+if test "x${have_libsjk}" = xno; then
+    echo "-------------------------------------------"
+    echo " libsjk is required to build this piece of "
+    echo " software. Please install libsjk before    "
+    echo " installing block.                         "
+    echo "-------------------------------------------"
+    (exit 1); exit 1;
+fi
 
 # Checks for header files.
 ac_ext=c

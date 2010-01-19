@@ -13,7 +13,16 @@ AC_PROG_CC
 #AC_PROG_INSTALL
 
 # Checks for libraries.
-AC_CHECK_LIB([sjk], [perrorf])
+AC_CHECK_LIB([sjk], [perrorf], [have_libsjk=yes])
+
+if test "x${have_libsjk}" = xno; then
+    echo "-------------------------------------------"
+    echo " libsjk is required to build this piece of "
+    echo " software. Please install libsjk before    "
+    echo " installing block.                         "
+    echo "-------------------------------------------"
+    (exit 1); exit 1;
+fi
 
 # Checks for header files.
 AC_HEADER_STDC
