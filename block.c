@@ -23,7 +23,7 @@
 #include "block.h"
 #include "libsjk.h"
 
-void  usage(void);
+static void  usage(void);
 
 /*
  * block adds specified IP addresses to a pf table 
@@ -86,7 +86,7 @@ main(int argc, char *argv[])
     return 0;
 }
 
-void
+static void
 usage(void)
 {
     fprintf(stderr, "usage: block [-hkK] [-t table] ip ip ... ip\n");

@@ -23,7 +23,7 @@
 #include "block.h"
 #include "libsjk.h"
 
-void usage(void);
+static void  usage(void);
 
 /*
  * Removes specified IP from pf table
@@ -69,7 +69,7 @@ main(int argc, char *argv[])
     return 0;
 }
 
-void
+static void
 usage(void)
 {
     fprintf(stderr, "usage: unblock [-h] [-t table] ip ip ... ip\n");
