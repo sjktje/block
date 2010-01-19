@@ -55,7 +55,11 @@ main(int argc, char *argv[])
         exit(1);
     }
 
-    ips = catargv(argc, argv);
+    if (argv[argc-1][0] == '-') { 
+        ips = catstdin();
+    } else {
+        ips = catargv(argc, argv);
+    }
 
     if (table == NULL) 
         asprintf(&table, "%s", DEFAULTTABLE);
