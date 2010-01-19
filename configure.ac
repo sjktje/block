@@ -13,6 +13,7 @@ AC_PROG_CC
 #AC_PROG_INSTALL
 
 # Checks for libraries.
+have_libsjk=no
 AC_CHECK_LIB([sjk], [perrorf], [have_libsjk=yes])
 
 if test "x${have_libsjk}" = xno; then

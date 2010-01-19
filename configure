@@ -3304,6 +3304,7 @@ fi
 #AC_PROG_INSTALL
 
 # Checks for libraries.
+have_libsjk=no
 
 { echo "$as_me:$LINENO: checking for perrorf in -lsjk" >&5
 echo $ECHO_N "checking for perrorf in -lsjk... $ECHO_C" >&6; }
