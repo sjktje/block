@@ -6,6 +6,9 @@
 /* Define to 1 if you have the `sjk' library (-lsjk). */
 #undef HAVE_LIBSJK
 
+/* Define to 1 if you have the <libsjk.h> header file. */
+#undef HAVE_LIBSJK_H
+
 /* Define to 1 if you have the <memory.h> header file. */
 #undef HAVE_MEMORY_H
 
