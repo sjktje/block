@@ -61,6 +61,8 @@ main(int argc, char *argv[])
         q = p;
 
         while ((q = getip(&ip, q)) != NULL) {
+            if (is_empty(ip))
+                continue;
             if (exists_ip(head, ip))
                 continue;
             add_ip(&head, ip);
@@ -94,6 +96,7 @@ getip(char **dst, char *p)
         p += off;
         return p;
     } else {
+        *dst = NULL;
         return p+1;
     }
 }
