@@ -1,7 +1,7 @@
 PROG=   block
 SRCS=   block.c
 BINDIR= ${PREFIX}/bin
-MAN=
+MAN1=	block.1
 
 CFLAGS+=-std=c99 -pedantic -Wall -W
 CFLAGS+=-Wno-missing-field-initializers -Wundef -Wendif-labels -Wshadow 

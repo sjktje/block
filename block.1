@@ -1,0 +1,40 @@
+.TH block 1 "March 2010"
+.SH NAME
+block 
+.SH SYNOPSIS
+.B block
+[-hknv] [-t table]
+.SH DESCRIPTION
+.B block 
+adds IP addresses found on standard input to a PF table. The input data does not
+need to be in any particular format;
+.B block 
+will find the IP addresses anyway. 
+.SH OPTIONS
+.TP
+.BI "\-h, \-\-help"
+displays a short help text
+.TP
+.BI "\-k, \-\-kill\-states"
+kills states related to IP addresses found on standard input
+.TP
+.BI "\-n \-\-no\-add"
+skips adding the IP address to PF (can be used in conjunction with 
+.B -k.)
+.TP
+.BI "\-t, \-\-table " table
+PF table to add IP addresses to
+.TP
+.BI "\-v, \-\-version"
+displays block version
+.SH EXAMPLES
+.PP
+To block all IP addresses associated with invalid SSH logins, except ones 
+coming from 1.2.3.4, one could do something like:
+.PP
+.RS
+\f((Wgrep Invalid /var/log/auth.log |grep -v 1.2.3.4 |block\fP
+.RE
+.SH AUTHORS
+Svante Kvarnstrom
+.BR <sjk@ankeborg.nu>
