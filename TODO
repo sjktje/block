@@ -1,4 +1,0 @@
-- Handle errors!
-- Using catargv() is stupid, it's much better having pfctl{kill,add,del} take 
-  a *array[] instead of going through that realloc loop... So, change the 
-  behaviour of the pfctl* functions and block will be a lot faster.
