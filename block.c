@@ -94,7 +94,7 @@ getip(char **dst, char *p)
         p += off;
         return p;
     } else {
-        return NULL;
+        return p+1;
     }
 }
 
