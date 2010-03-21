@@ -323,7 +323,7 @@ ban_ips(struct iplist *head, struct optlist *c)
 
     while (head != NULL) {
         if (!c->nflag)
-            fprintf(PFCTL, "%s", head->ip);
+            fprintf(PFCTL, "%s\n", head->ip);
         if (c->kflag)
             systemf("pfctl -k %s", head->ip);
         head = head->next;
