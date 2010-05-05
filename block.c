@@ -34,6 +34,7 @@ static struct optlist   *optlistinit(void);
 static struct optlist   *parseargs(int *, char ***);
 static void              add_ip(struct iplist **, char *);
 static void              ban_ips(struct iplist *, struct optlist *); 
+static void              unban_ips(struct iplist *, struct optlist *);
 static void              perrorf(const char *, ...);
 static void              usage(char *);
 
@@ -70,7 +71,10 @@ main(int argc, char *argv[])
 
     }
 
-    ban_ips(head, cmdargs);
+    if (cmdargs->uflag)
+        unban_ips(head, cmdargs);
+    else
+        ban_ips(head, cmdargs);
 
     return 0;
 }
@@ -129,17 +133,18 @@ parseargs(int *argc, char ***argv)
     int             ch;
     struct optlist *cmdargs;
     static struct option options[] = {
-        { "table",              required_argument,  NULL,   't' },
+        { "help",               no_argument,        NULL,   'h' },
         { "kill-states",        no_argument,        NULL,   'k' },
         { "no-add",             no_argument,        NULL,   'n' },
+        { "table",              required_argument,  NULL,   't' },
+        { "unblock",            no_argument,        NULL,   'u' },
         { "version",            no_argument,        NULL,   'v' },
-        { "help",               no_argument,        NULL,   'h' },
     };
 
     cmdargs = optlistinit();
     cmdargs->progname = *argv[0];
 
-    while ((ch = getopt_long(*argc, *argv, "hknt:v", options, NULL)) != -1) {
+    while ((ch = getopt_long(*argc, *argv, "hknt:uv", options, NULL)) != -1) {
         switch (ch) {
         case 'h':
             usage(*argv[0]);
@@ -152,6 +157,9 @@ parseargs(int *argc, char ***argv)
             break;
         case 't':
             cmdargs->table = vg_strdup(optarg);
+            break;
+        case 'u':
+            cmdargs->uflag = 1;
             break;
         case 'v':
             printf("%s v%s\n", cmdargs->progname, VERSION);
@@ -187,6 +195,7 @@ optlistinit(void)
     cmdargs->kflag = 0;
     cmdargs->nflag = 0;
     cmdargs->table = NULL;
+    cmdargs->uflag = 0;
     return cmdargs;
 }
 
@@ -335,3 +344,25 @@ ban_ips(struct iplist *head, struct optlist *c)
     pclose(PFCTL);
 }
 
+static void
+unban_ips(struct iplist *head, struct optlist *c)
+{
+    FILE *PFCTL = NULL;
+    char *cmd = NULL;
+
+    cmd = vg_asprintf("/sbin/pfctl -t %s -T del -f -", c->table);
+
+    if ((PFCTL = popen(cmd, "w")) == NULL) {
+        perrorf("Could not popen %s", cmd);
+        exit(1);
+    }
+
+    free(cmd);
+
+    while (head != NULL) {
+        fprintf(PFCTL, "%s\n", head->ip);
+        head = head->next;
+    }
+
+    pclose(PFCTL);
+}
