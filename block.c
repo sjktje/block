@@ -118,8 +118,9 @@ usage(char *p)
             "   -k, --kill-states           kill states\n"
             "   -n, --no-add                only kill states\n"
             "   -t, --table                 table to add IPs to\n"
+            "   -u, --unblock               removes IPs instead of adding them"
             "   -v, --version               display program version\n\n"
-            "See http://ankeborg.nu/wiki/block for more information.\n");
+            "See http://ankeborg.nu/wiki/Block for more information.\n");
     exit(1);
 }
 
