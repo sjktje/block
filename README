@@ -1,0 +1,8 @@
+To install:
+
+$ make
+$ sudo sh -c 'PREFIX=/usr/local make install'
+
+For manual:
+
+$ man 1 block
