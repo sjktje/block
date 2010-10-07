@@ -1,3 +1,6 @@
+This program scans STDIN and adds any found IP addresses to a pf table. For
+more information, please see man 1 block.
+
 To install:
 
 $ make
