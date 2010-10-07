@@ -176,7 +176,8 @@ parseargs(int *argc, char ***argv)
     *argv += optind;
 
     if (is_empty(cmdargs->table))
-        cmdargs->table = strdup(DEFAULTTABLE);
+		if ((cmdargs->table = getenv("BLOCKTABLE")) == NULL)
+			cmdargs->table = strdup(DEFAULTTABLE);
 
     return cmdargs;
 }

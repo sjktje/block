@@ -30,6 +30,12 @@ removes IP addresses from PF
 .TP
 .BI "\-v, \-\-version"
 displays block version
+.SH "ENVIRONMENT VARIABLES"
+.TP
+.B BLOCKTABLE
+This variable sets the default table to use if none is specified using the 
+.B -t
+option. If unset, the hard coded default table "attackers" will be used.
 .SH EXAMPLES
 .PP
 To block all IP addresses associated with invalid SSH logins, except ones 
