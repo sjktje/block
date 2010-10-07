@@ -2,7 +2,7 @@
 #define __block_h
 
 #define VERSION "0.2b"
-#define DEFAULTTABLE "bruteforcers"
+#define DEFAULTTABLE "attackers"
 
 /* Command line options */
 struct optlist {
