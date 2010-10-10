@@ -25,17 +25,18 @@
 #include "block.h"
 
 static char             *getip(char **, char *);
-static void				 sjk_asprintf(char **, const char *, ...);
-static char             *sjk_strdup(char *);
+static char             *sjk_strdup(const char *);
 static int               exists_ip(struct iplist *, char *);
 static int               is_empty(char *);
 static int               systemf(const char *, ...);
 static struct optlist   *optlistinit(void);
 static struct optlist   *parseargs(int *, char ***);
+static void				 sjk_asprintf(char **, const char *, ...);
+static void				*sjk_malloc(size_t);
 static void              add_ip(struct iplist **, char *);
 static void              ban_ips(struct iplist *, struct optlist *); 
-static void              unban_ips(struct iplist *, struct optlist *);
 static void              perrorf(const char *, ...);
+static void              unban_ips(struct iplist *, struct optlist *);
 static void              usage(char *);
 
 
@@ -158,7 +159,7 @@ parseargs(int *argc, char ***argv)
             cmdargs->nflag = 1;
             break;
         case 't':
-            cmdargs->table = vg_strdup(optarg);
+            cmdargs->table = sjk_strdup(optarg);
             break;
         case 'u':
             cmdargs->uflag = 1;
@@ -206,7 +207,7 @@ optlistinit(void)
  * strdup() that exits upon error.
  */
 static char *
-sjk_strdup(char *src)
+sjk_strdup(const char *src)
 {
     char *dst;
     if ((dst = strdup(src)) == NULL) {
@@ -216,6 +217,20 @@ sjk_strdup(char *src)
     return dst;
 }
 
+/*
+ * malloc() that exits upon error.
+ */
+static void *
+sjk_malloc(size_t size)
+{
+	void *ret = NULL;
+	if ((ret = malloc(size)) == NULL) {
+		perror("sjk_malloc");
+		exit(1);
+	}
+	return ret;
+}
+	
 /* 
  * asprintf() that exits upon error.
  */
