@@ -25,7 +25,7 @@
 #include "block.h"
 
 static char             *getip(char **, char *);
-static char             *vg_asprintf(const char *, ...);
+static void				 sjk_asprintf(char **, const char *, ...);
 static char             *vg_strdup(char *);
 static int               exists_ip(struct iplist *, char *);
 static int               is_empty(char *);
@@ -96,7 +96,8 @@ getip(char **dst, char *p)
         p++;
 
     if (4 <= sscanf(p, "%d.%d.%d.%d%n", &ip[0], &ip[1], &ip[2], &ip[3], &off)) {
-        *dst = vg_asprintf("%d.%d.%d.%d", ip[0], ip[1], ip[2], ip[3]);
+		sjk_asprintf(dst, "%d.%d.%d.%d", ip[0], ip[1], ip[2], ip[3]);
+
         p += off;
         return p;
     } else {
@@ -218,19 +219,17 @@ vg_strdup(char *src)
 /* 
  * asprintf() that exits upon error.
  */
-static char *
-vg_asprintf(const char *fmt, ...)
+static void
+sjk_asprintf(char **ret, const char *fmt, ...)
 {
-    va_list va;
-    char *dst = NULL;
-    va_start(va, fmt);
-    vasprintf(&dst, fmt, va);
-    if (dst == NULL) {
-        perror("vg_asprintf");
-        exit(1);
-    }
-    va_end(va);
-    return dst;
+	va_list va;
+	va_start(va, fmt);
+	vasprintf(ret, fmt, va);
+	if (*ret == NULL) {
+		perror("sjk_asprintf");
+		exit(1);
+	}
+	va_end(va);
 }
 
 /*
@@ -325,7 +324,7 @@ ban_ips(struct iplist *head, struct optlist *c)
     char *cmd = NULL;
 
     if (!c->nflag) {
-        cmd = vg_asprintf("/sbin/pfctl -t %s -T add -f -", c->table);
+		sjk_asprintf(&cmd, "/sbin/pfctl -t %s -T add -f -", c->table);
 
         if ((PFCTL = popen(cmd, "w")) == NULL) {
             perrorf("Could not popen %s", cmd);
@@ -352,7 +351,7 @@ unban_ips(struct iplist *head, struct optlist *c)
     FILE *PFCTL = NULL;
     char *cmd = NULL;
 
-    cmd = vg_asprintf("/sbin/pfctl -t %s -T del -f -", c->table);
+	sjk_asprintf(&cmd, "/sbin/pfctl -t %s -T del -f -", c->table);
 
     if ((PFCTL = popen(cmd, "w")) == NULL) {
         perrorf("Could not popen %s", cmd);
