@@ -191,10 +191,7 @@ static struct optlist *
 optlistinit(void)
 {
     struct optlist *cmdargs;
-    if ((cmdargs = malloc(sizeof(struct optlist))) == NULL) {
-        perror("optlistinit");
-        exit(1);
-    }
+	cmdargs = sjk_malloc(sizeof(struct optlist));
 
     cmdargs->kflag = 0;
     cmdargs->nflag = 0;
@@ -300,10 +297,7 @@ is_empty(char *s)
  */
 static void add_ip(struct iplist **head, char *ip) {
     struct iplist *new;
-    if ((new = malloc(sizeof(struct iplist))) == NULL) {
-        perror("add_ip");
-        exit(1);
-    }
+	new = sjk_malloc(sizeof(struct iplist));
     new->ip = strdup(ip);
     new->next = *head;
     *head = new;
