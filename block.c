@@ -298,7 +298,7 @@ is_empty(char *s)
 static void add_ip(struct iplist **head, char *ip) {
     struct iplist *new;
 	new = sjk_malloc(sizeof(struct iplist));
-    new->ip = strdup(ip);
+	new->ip = sjk_strdup(ip);
     new->next = *head;
     *head = new;
 }
