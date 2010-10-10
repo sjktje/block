@@ -26,7 +26,7 @@
 
 static char             *getip(char **, char *);
 static void				 sjk_asprintf(char **, const char *, ...);
-static char             *vg_strdup(char *);
+static char             *sjk_strdup(char *);
 static int               exists_ip(struct iplist *, char *);
 static int               is_empty(char *);
 static int               systemf(const char *, ...);
@@ -206,11 +206,11 @@ optlistinit(void)
  * strdup() that exits upon error.
  */
 static char *
-vg_strdup(char *src)
+sjk_strdup(char *src)
 {
     char *dst;
     if ((dst = strdup(src)) == NULL) {
-        perror("vg_strdup");
+        perror("sjk_strdup");
         exit(1);
     }
     return dst;
