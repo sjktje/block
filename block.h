@@ -1,7 +1,7 @@
 #ifndef __block_h
 #define __block_h
 
-#define VERSION "0.3"
+#define VERSION "0.4"
 #define DEFAULTTABLE "attackers"
 
 /* Command line options */
