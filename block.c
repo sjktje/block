@@ -31,17 +31,17 @@ static int               is_empty(char *);
 static int               systemf(const char *, ...);
 static struct optlist   *optlistinit(void);
 static struct optlist   *parseargs(int *, char ***);
-static void				 sjk_asprintf(char **, const char *, ...);
-static void				*sjk_malloc(size_t);
+static void		 sjk_asprintf(char **, const char *, ...);
+static void		*sjk_malloc(size_t);
 static void              add_ip(struct iplist **, char *);
-static void              ban_ips(struct iplist *, struct optlist *); 
+static void              ban_ips(struct iplist *, struct optlist *);
 static void              perrorf(const char *, ...);
 static void              unban_ips(struct iplist *, struct optlist *);
 static void              usage(char *);
 
 
 int
-main(int argc, char *argv[]) 
+main(int argc, char *argv[])
 {
     struct optlist *cmdargs;
     struct iplist  *head = NULL;
@@ -80,7 +80,7 @@ main(int argc, char *argv[])
     return 0;
 }
 
-/* 
+/*
  * Makes dst point to malloced string containing first IP address found in P.
  * Returns NULL if no IP address was found.
  */
@@ -90,15 +90,14 @@ getip(char **dst, char *p)
     int ip[4];
     int off;
 
-    if (is_empty(p)) 
+    if (is_empty(p))
         return NULL;
-    
+
     while (!isdigit(*p) && (*p != '\0'))
         p++;
 
     if (4 <= sscanf(p, "%d.%d.%d.%d%n", &ip[0], &ip[1], &ip[2], &ip[3], &off)) {
-		sjk_asprintf(dst, "%d.%d.%d.%d", ip[0], ip[1], ip[2], ip[3]);
-
+        sjk_asprintf(dst, "%d.%d.%d.%d", ip[0], ip[1], ip[2], ip[3]);
         p += off;
         return p;
     } else {
@@ -122,18 +121,18 @@ usage(char *p)
             "   -t, --table                 table to add IPs to\n"
             "   -u, --unblock               removes IPs instead of adding them\n"
             "   -v, --version               display program version\n\n"
-		   );
+    );
     exit(1);
 }
 
 /*
- * Parses command line arguments and returns a malloced struct optlist 
+ * Parses command line arguments and returns a malloced struct optlist
  * containing flags and arguments issued by the user.
  */
 struct optlist *
 parseargs(int *argc, char ***argv)
 {
-    int             ch;
+    int ch;
     struct optlist *cmdargs;
     static struct option options[] = {
         { "help",               no_argument,        NULL,   'h' },
@@ -191,7 +190,7 @@ static struct optlist *
 optlistinit(void)
 {
     struct optlist *cmdargs;
-	cmdargs = sjk_malloc(sizeof(struct optlist));
+    cmdargs = sjk_malloc(sizeof(struct optlist));
 
     cmdargs->kflag = 0;
     cmdargs->nflag = 0;
@@ -220,28 +219,28 @@ sjk_strdup(const char *src)
 static void *
 sjk_malloc(size_t size)
 {
-	void *ret = NULL;
-	if ((ret = malloc(size)) == NULL) {
-		perror("sjk_malloc");
-		exit(1);
-	}
-	return ret;
+    void *ret = NULL;
+    if ((ret = malloc(size)) == NULL) {
+            perror("sjk_malloc");
+            exit(1);
+    }
+    return ret;
 }
-	
-/* 
+
+/*
  * asprintf() that exits upon error.
  */
 static void
 sjk_asprintf(char **ret, const char *fmt, ...)
 {
-	va_list va;
-	va_start(va, fmt);
-	vasprintf(ret, fmt, va);
-	if (*ret == NULL) {
-		perror("sjk_asprintf");
-		exit(1);
-	}
-	va_end(va);
+    va_list va;
+    va_start(va, fmt);
+    vasprintf(ret, fmt, va);
+    if (*ret == NULL) {
+            perror("sjk_asprintf");
+            exit(1);
+    }
+    va_end(va);
 }
 
 /*
@@ -258,7 +257,7 @@ perrorf(const char *fmt, ...)
     perror(buf);
 }
 
-/* 
+/*
  * printf-ish system()
  */
 static int
@@ -279,7 +278,7 @@ systemf(const char *fmt, ...) {
     return ret;
 }
 
-/* 
+/*
  * Checks if string is empty (NULL or \0) and returns true if that is the case.
  */
 static int
@@ -292,19 +291,19 @@ is_empty(char *s)
 }
 
 
-/* 
- * Adds ip to linked list. 
+/*
+ * Adds ip to linked list.
  */
 static void add_ip(struct iplist **head, char *ip) {
     struct iplist *new;
-	new = sjk_malloc(sizeof(struct iplist));
-	new->ip = sjk_strdup(ip);
+    new = sjk_malloc(sizeof(struct iplist));
+    new->ip = sjk_strdup(ip);
     new->next = *head;
     *head = new;
 }
 
-/* 
- * Checks if ip is already on the list. 
+/*
+ * Checks if ip is already on the list.
  */
 static int exists_ip(struct iplist *head, char *ip) {
     int len;
@@ -322,18 +321,18 @@ static int exists_ip(struct iplist *head, char *ip) {
     return 0;
 }
 
-/* 
- * Adds ips in linked list to PF table t or kills their states or both, 
+/*
+ * Adds ips in linked list to PF table t or kills their states or both,
  * depending on command line arguments.
  */
-static void 
-ban_ips(struct iplist *head, struct optlist *c) 
+static void
+ban_ips(struct iplist *head, struct optlist *c)
 {
     FILE *PFCTL = NULL;
     char *cmd = NULL;
 
     if (!c->nflag) {
-		sjk_asprintf(&cmd, "/sbin/pfctl -t %s -T add -f -", c->table);
+        sjk_asprintf(&cmd, "/sbin/pfctl -t %s -T add -f -", c->table);
 
         if ((PFCTL = popen(cmd, "w")) == NULL) {
             perrorf("Could not popen %s", cmd);
@@ -360,7 +359,7 @@ unban_ips(struct iplist *head, struct optlist *c)
     FILE *PFCTL = NULL;
     char *cmd = NULL;
 
-	sjk_asprintf(&cmd, "/sbin/pfctl -t %s -T del -f -", c->table);
+    sjk_asprintf(&cmd, "/sbin/pfctl -t %s -T del -f -", c->table);
 
     if ((PFCTL = popen(cmd, "w")) == NULL) {
         perrorf("Could not popen %s", cmd);
